@@ -1,8 +1,12 @@
 {
-  "name": "fathom-swap-smart-contracts",
+  "name": "fathomswap-contracts",
   "author": "Fathom",
   "version": "1.0.0",
   "description": "FathomSwap Smart Contracts",
+  "files": [
+    "artifacts",
+    "contracts"
+  ],
   "scripts": {
     "compile": "npx hardhat compile",
     "test": "npx hardhat test"
@@ -11,6 +15,8 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "@openzeppelin/contracts": "^3.2.0",
+    "@uniswap/v2-core": "1.0.0",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "dotenv": "^16.0.1",
     "hardhat": "^2.10.1"
   }

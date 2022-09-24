@@ -58,7 +58,7 @@ async function addLiquidity(token1Address, token2Address, token1Symbol, token2Sy
     const pairAsToken = BEP20.attach(pairAddress)
 
     console.log(`${token1Symbol}-${token2Symbol} Pair Added to Liquidity Pool at Address ${pairAddress}`)
-    console.log(`Balance of LP token for pair ${token1Symbol}-${token2Symbol} is ${await pairAsToken.balanceOf(tokenOwner.address)}`)
+    // console.log(`Balance of LP token for pair ${token1Symbol}-${token2Symbol} is ${await pairAsToken.balanceOf(tokenOwner.address)}`)
 }
 
 async function printPrice(pair) {
@@ -126,16 +126,21 @@ async function main() {
     console.log("Deploying contracts with the account:", admin.address);
     console.log("Account balance:", (await admin.getBalance()).toString());
 
-    fathomswapFactory = await deploy("FathomswapFactory", admin, admin.address);
+    fathomswapFactory = await deploy("UniswapV2Factory", admin, admin.address);
     console.log("FathomswapFactory was deployed on address " + fathomswapFactory.address);
+
     WETH = await deploy("WETH9", admin);
     console.log("WETH token was deployed on address " + WETH.address);
-    router = await deploy("FathomswapRouter02", admin, fathomswapFactory.address, WETH.address);
+
+    router = await deploy("UniswapV2Router02", admin, fathomswapFactory.address, WETH.address);
     console.log("FathomswapRouter was deployed on address " + router.address);
+
     WXDC = await deploy("BEP20", admin, "WXDC", "WXDC");
     console.log("WXDC token was deployed on address " + WXDC.address);
+
     USDT = await deploy("BEP20", admin, "USDT", "USDT");
     console.log("USDT token was deployed on address " + USDT.address);
+
     ABC = await deploy("BEP20", admin, "ABC", "ABC");
     console.log("ABC token was deployed on address " + ABC.address);
 
@@ -193,7 +198,7 @@ async function main() {
     console.log("Bob ABC balance " + await ABC.balanceOf(bob.address));
 
     const pairAddress = await fathomswapFactory.getPair(WXDC.address, USDT.address);
-    const Pair = await ethers.getContractFactory("FathomswapPair");
+    const Pair = await ethers.getContractFactory("UniswapV2Pair");
     const pair = Pair.attach(pairAddress);
 
     await printPrice(pair);
