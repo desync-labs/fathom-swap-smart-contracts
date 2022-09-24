@@ -134,8 +134,6 @@ describe("Integration", function() {
         fathomswapFactory = await deploy("UniswapV2Factory", admin, admin.address);
         console.log("FathomswapFactory was deployed on address " + fathomswapFactory.address);
 
-        console.log("creation code : ", await fathomswapFactory.getInitHash());
-
         WETH = await deploy("WETH9", admin);
         console.log("WETH token was deployed on address " + WETH.address);
 
