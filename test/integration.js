@@ -131,11 +131,11 @@ describe("Integration", function() {
     });
     
     it("Deploy system", async function() {
-        fathomswapFactory = await deploy("FathomswapFactory", admin, admin.address);
+        fathomswapFactory = await deploy("UniswapV2Factory", admin, admin.address);
         console.log("FathomswapFactory was deployed on address " + fathomswapFactory.address);
         WETH = await deploy("WETH9", admin);
         console.log("WETH token was deployed on address " + WETH.address);
-        router = await deploy("FathomswapRouter02", admin, fathomswapFactory.address, WETH.address);
+        router = await deploy("UniswapV2Router02", admin, fathomswapFactory.address, WETH.address);
         console.log("FathomswapRouter was deployed on address " + router.address);
         WXDC = await deploy("BEP20", admin, "WXDC", "WXDC");
         console.log("WXDC token was deployed on address " + WXDC.address);
@@ -206,7 +206,7 @@ describe("Integration", function() {
 
     it("Price manipulation", async function() {
         const pairAddress = await fathomswapFactory.getPair(WXDC.address, USDT.address);
-        const Pair = await hre.ethers.getContractFactory("FathomswapPair");
+        const Pair = await hre.ethers.getContractFactory("UniswapV2Pair");
         const pair = Pair.attach(pairAddress);
 
         await printPrice(pair);
