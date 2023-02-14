@@ -41,7 +41,7 @@ module.exports = {
       timeout: 100000
     },
     apothem: {
-      url: `https://rpc.apothem.network`,
+      url: `https://erpc.apothem.network`,
       accounts: [fs.readFileSync("./privateKey").toString()],
       timeout: 100000
     },

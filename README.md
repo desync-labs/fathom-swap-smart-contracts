@@ -11,6 +11,9 @@ $ npm install
 # Set private key:
 $ echo -n "YOUR_PRIVATE_KEY" > privateKey
 
+# Compile contracts
+$ npx hardhat compile
+
 # Run tests:
 $ npm run test
 

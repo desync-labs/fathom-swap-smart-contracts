@@ -4,7 +4,6 @@
 .vscode
 .env
 yarn.lock
-package-lock.json
 coverage
 coverage.json
 typechain

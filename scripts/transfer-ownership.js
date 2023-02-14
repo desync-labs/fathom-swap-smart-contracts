@@ -2,7 +2,7 @@ const { ethers } = require("hardhat");
 
 async function main() {
     // Addresses
-    const FACTORY_ADDRESS = '0x28763715EB5Ac4C3B705D3Ab307C5B3846939612'
+    const FACTORY_ADDRESS = '0xCf39Af8765284b33e269886106b91553D8a87e0C'
     const NEW_OWNER_ADDRESS = '0xc0Ee98ac1a44B56fbe2669A3B3C006DEB6fDd0f9'
 
     // Get the factory

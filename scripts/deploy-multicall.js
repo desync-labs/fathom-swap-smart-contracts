@@ -15,10 +15,10 @@ async function main() {
 
     // Deploy Multicall
     console.log("Deploying contract...")
-    multicall = await deploy("Multicall", admin, admin.address);
+    multicall = await deploy("Multicall", admin);
 
     // Print address
-    console.log("Multicall address: " + factory.address);
+    console.log("Multicall address: " + multicall.address);
 }
 
 main()
