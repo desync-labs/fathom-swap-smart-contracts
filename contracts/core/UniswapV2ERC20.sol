@@ -6,7 +6,7 @@ import './libraries/SafeMath.sol';
 contract UniswapV2ERC20 is IUniswapV2ERC20 {
     using SafeMath for uint;
 
-    string public constant name = 'Fathom Swap';
+    string public constant name = 'Fathom DEX';
     string public constant symbol = 'FTHM-LP';
     uint8 public constant decimals = 18;
     uint  public totalSupply;
