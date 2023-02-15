@@ -9,22 +9,27 @@ async function deploy(contractName, signer, ...args) {
 async function main() {
     let admin;
 
-    let fathomswapFactory;
-    let WETH;
-    let router;
+    let router, factory;
 
     [admin] = await ethers.getSigners();
+
     console.log("Deploying contracts with the account:", admin.address);
     console.log("Account balance:", (await admin.getBalance()).toString());
 
-    fathomswapFactory = await deploy("UniswapV2Factory", admin, admin.address);
-    console.log("FathomswapFactory was deployed on address " + fathomswapFactory.address);
+    // Deploy Factory
+    factory = await deploy("UniswapV2Factory", admin, admin.address);
+    
+    // WETH
+    const WETH_ADDRESS = '0xE99500AB4A413164DA49Af83B9824749059b46ce';
 
-    WETH = await deploy("WETH9", admin);
-    console.log("WETH token was deployed on address " + WETH.address);
+    // Deploy Router
+    router = await deploy("UniswapV2Router02", admin, factory.address, WETH_ADDRESS);
 
-    router = await deploy("UniswapV2Router02", admin, fathomswapFactory.address, WETH.address);
-    console.log("FathomswapRouter was deployed on address " + router.address);
+    // Print addresses and init hash code
+    console.log("Factory address: " + factory.address);
+    console.log("WETH address: " + WETH_ADDRESS);
+    console.log("Router address: " + router.address);
+    console.log("Creation code: ", await factory.getInitHash());
 }
 
 main()
