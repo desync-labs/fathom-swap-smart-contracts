@@ -20,7 +20,7 @@ async function main() {
     factory = await deploy("UniswapV2Factory", admin, admin.address);
     
     // WETH
-    const WETH_ADDRESS = '0xE99500AB4A413164DA49Af83B9824749059b46ce';
+    const WETH_ADDRESS = '951857744785e80e2de051c32ee7b25f9c458c42';
 
     // Deploy Router
     router = await deploy("UniswapV2Router02", admin, factory.address, WETH_ADDRESS);
