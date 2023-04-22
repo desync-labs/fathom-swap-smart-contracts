@@ -18,14 +18,14 @@ $ npx hardhat compile
 $ npm run test
 
 # Deploy to $network
-$ npx hardhat run scripts/deploy.js  --network $network
+$ npx hardhat run scripts/deploy.js --network $network
 
 # Set fee receipient 
-$ npx hardhat run scripts/set-fee-receipient.js  --network $network
+$ npx hardhat run scripts/set-fee-receipient.js --network $network
 
 # Set ownership (address that has permission to set fee receipient)
-$ npx hardhat run scripts/set-ownership.js  --network $network
+$ npx hardhat run scripts/transfer-ownership.js --network $network
 
 # Deploy multicall (only 1 instance needed on network)
-$ npx hardhat run scripts/deploy-multicall.js  --network $network
+$ npx hardhat run scripts/deploy-multicall.js --network $network
 ```
