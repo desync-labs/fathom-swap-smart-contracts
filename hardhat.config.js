@@ -45,8 +45,8 @@ module.exports = {
       accounts: [fs.readFileSync("./privateKey").toString()],
       timeout: 100000
     },
-    xdc: {
-      url: `https://rpc.xdc.network`,
+    xinfin: {
+      url: `https://erpc.xinfin.network`,
       accounts: [fs.readFileSync("./privateKey").toString()],
       timeout: 100000
     }
