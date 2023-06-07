@@ -16,6 +16,8 @@ interface IFarm {
 
     function pause() external;
 
+    function unpause() external;
+
     function updatePoolReward(address _lpToken) external;
 
     function rewardPerBlock() external view returns (uint);

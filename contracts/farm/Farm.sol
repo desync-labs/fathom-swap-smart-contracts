@@ -38,9 +38,9 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
         uint256 accRewardPerShare,
         uint256 lastRewardBlock
     );
-    event LogDeposit(address indexed user, uint256 amount);
-    event LogWithdraw(address indexed user, uint256 amount);
-    event LogRewardPaid(address indexed user, uint256 reward);
+    event LogDeposit(address indexed user, address indexed lpToken, uint256 amount);
+    event LogWithdraw(address indexed user, address indexed lpToken, uint256 amount);
+    event LogRewardPaid(address indexed user, address indexed lpToken, uint256 reward);
 
     function initialize(
         address _rewardToken,
@@ -95,7 +95,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
                 stake.rewardDebt;
             if (pending > 0) {
                 address(rewardToken).safeTransfer(msg.sender, pending);
-                emit LogRewardPaid(msg.sender, pending);
+                emit LogRewardPaid(msg.sender, _lpToken, pending);
             }
         }
 
@@ -105,7 +105,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
         _lpToken.safeTransferFrom(msg.sender, address(this), _amount);
         lpTokenBalances[_lpToken] += _amount;
 
-        emit LogDeposit(msg.sender, _amount);
+        emit LogDeposit(msg.sender, _lpToken, _amount);
     }
 
     function withdraw(
@@ -125,7 +125,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
             stake.rewardDebt;
         if (pending > 0) {
             address(rewardToken).safeTransfer(msg.sender, pending);
-            emit LogRewardPaid(msg.sender, pending);
+            emit LogRewardPaid(msg.sender, _lpToken, pending);
         }
 
         if (_amount > 0) {
@@ -136,7 +136,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
 
         stake.rewardDebt = (stake.amount * pool.accRewardPerShare) / 1e12;
 
-        emit LogWithdraw(msg.sender, _amount);
+        emit LogWithdraw(msg.sender, _lpToken, _amount);
     }
 
     function emergencyWithdraw(address _lpToken) override external whenPaused {
@@ -150,16 +150,22 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
 
         _lpToken.safeTransfer(msg.sender, amount);
 
-        emit LogWithdraw(msg.sender, amount);
+        emit LogWithdraw(msg.sender,  _lpToken, amount);
     }
 
-    function setRewardPerBlock(uint256 _rewardPerBlock) override external onlyOwner {
+    function setRewardPerBlock(uint256 _rewardPerBlock) override external onlyOwner whenNotPaused {
         rewardPerBlock = _rewardPerBlock;
     }
 
     function pause() external override onlyOwner {
         _pause();
     }
+
+
+    function unpause() external override onlyOwner {
+        _unpause();
+    }
+
 
     function updatePoolReward(address _lpToken) public override {
         PoolInfo storage pool = poolInfos[_lpToken];
@@ -176,8 +182,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
         }
 
         uint256 multiplier = block.number - pool.lastRewardBlock;
-        uint256 reward = (multiplier * rewardPerBlock * pool.allocPoint) /
-            totalAllocPoint;
+        uint256 reward = (multiplier * rewardPerBlock * pool.allocPoint) / totalAllocPoint;
         pool.accRewardPerShare += (reward * 1e12) / lpSupply;
         pool.lastRewardBlock = block.number;
 
