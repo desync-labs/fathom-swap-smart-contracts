@@ -55,7 +55,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
 
     function addPool(
         address _lpToken,
-        uint _allocPoint
+        uint256 _allocPoint
     ) external override onlyOwner whenNotPaused {
         poolInfos[_lpToken] = PoolInfo({
             allocPoint: _allocPoint,
@@ -70,7 +70,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
 
     function updateAllocation(
         address _lpToken,
-        uint _allocPoint
+        uint256 _allocPoint
     ) external override onlyOwner whenNotPaused {
         PoolInfo storage pool = poolInfos[_lpToken];
 
@@ -131,7 +131,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
         if (_amount > 0) {
             stake.amount -= _amount;
             _lpToken.safeTransfer(msg.sender, _amount);
-            lpTokenBalances[_lpToken] += _amount;
+            lpTokenBalances[_lpToken] -= _amount;
         }
 
         stake.rewardDebt = (stake.amount * pool.accRewardPerShare) / 1e12;
@@ -143,12 +143,13 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
         StakeInfo storage stake = stakes[_lpToken][msg.sender];
         require(stake.amount > 0, "Zero balance");
 
-        uint amount = stake.amount;
+        uint256 amount = stake.amount;
 
         stake.amount = 0;
         stake.rewardDebt = 0;
 
         _lpToken.safeTransfer(msg.sender, amount);
+        lpTokenBalances[_lpToken] -= amount;
 
         emit LogWithdraw(msg.sender,  _lpToken, amount);
     }
