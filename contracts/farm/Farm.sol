@@ -25,7 +25,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
     address public rewardToken;
 
     uint256 public rewardPerBlock;
-    uint256 public totalAllocPoint = 0;
+    uint256 public totalAllocPoint;
 
     mapping(address => PoolInfo) public poolInfos;
     mapping(address => mapping(address => StakeInfo)) public stakes;
@@ -51,6 +51,7 @@ contract Farm is IFarm, OwnableUpgradeable, PausableUpgradeable {
 
         rewardToken = _rewardToken;
         rewardPerBlock = _rewardPerBlock;
+        totalAllocPoint = 0;
     }
 
     function addPool(

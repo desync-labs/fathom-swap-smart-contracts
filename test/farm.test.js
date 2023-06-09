@@ -1,4 +1,4 @@
-const { advanceBlock } = require('./helpers/time');
+const { advanceBlock, latestNumber } = require('./helpers/time');
 
 const { ethers } = require("hardhat");
 const { expect } = require("chai");
@@ -60,9 +60,9 @@ describe("Farm", () => {
         await this.farm.updatePoolReward(this.lp2.address);
         await this.farm.updatePoolReward(this.lp3.address);
 
-        const pool1 = await this.farm.poolInfos(this.lp1.address);
-        const pool2 = await this.farm.poolInfos(this.lp2.address);
-        const pool3 = await this.farm.poolInfos(this.lp3.address);
+        let pool1 = await this.farm.poolInfos(this.lp1.address);
+        let pool2 = await this.farm.poolInfos(this.lp2.address);
+        let pool3 = await this.farm.poolInfos(this.lp3.address);
 
         expect(pool1.accRewardPerShare).to.be.eq('812000000000'); 
         expect(pool2.accRewardPerShare).to.be.eq('81000000000');
